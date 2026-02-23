@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Microservice Calculator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #f3f4f6;
+      }
+
+      .card {
+        width: min(420px, 92vw);
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      h1 {
+        margin: 0 0 16px;
+        font-size: 1.25rem;
+      }
+
+      .row {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      input,
+      select,
+      button {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        font-size: 0.95rem;
+      }
+
+      button {
+        cursor: pointer;
+        background: #111827;
+        color: #ffffff;
+      }
+
+      #output {
+        margin-top: 14px;
+        font-weight: 600;
+      }
+
+      #error {
+        margin-top: 8px;
+        color: #b91c1c;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <h1>Calculator (Microservices)</h1>
+      <div class="row">
+        <input id="a" type="number" placeholder="Enter first number" />
+        <input id="b" type="number" placeholder="Enter second number" />
+        <select id="operation">
+          <option value="add">Add</option>
+          <option value="subtract">Subtract</option>
+          <option value="multiply">Multiply</option>
+          <option value="divide">Divide</option>
+        </select>
+        <button id="calculateBtn">Calculate</button>
+      </div>
+      <div id="output">Result: -</div>
+      <div id="error"></div>
+    </main>
+
+    <script>
+      const button = document.getElementById("calculateBtn");
+      const output = document.getElementById("output");
+      const errorText = document.getElementById("error");
+
+      button.addEventListener("click", async () => {
+        const a = Number(document.getElementById("a").value);
+        const b = Number(document.getElementById("b").value);
+        const operation = document.getElementById("operation").value;
+
+        output.textContent = "Result: -";
+        errorText.textContent = "";
+
+        if (Number.isNaN(a) || Number.isNaN(b)) {
+          errorText.textContent = "Please enter valid numbers.";
+          return;
+        }
+
+        try {
+          const response = await fetch("/api/calculate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ operation, a, b })
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            errorText.textContent = data.error || "Request failed.";
+            return;
+          }
+
+          output.textContent = `Result: ${data.result}`;
+        } catch (error) {
+          errorText.textContent = `Unable to reach API gateway: ${error.message}`;
+        }
+      });
+    </script>
+  </body>
+</html>

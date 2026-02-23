@@ -1,0 +1,12 @@
+{
+  "name": "calculator-microservices",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Calculator API using microservice architecture in Node.js",
+  "scripts": {
+    "start": "concurrently \"npm --prefix gateway start\" \"npm --prefix services/add start\" \"npm --prefix services/subtract start\" \"npm --prefix services/multiply start\" \"npm --prefix services/divide start\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

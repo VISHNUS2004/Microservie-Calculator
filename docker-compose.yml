@@ -1,0 +1,40 @@
+services:
+  gateway:
+    build:
+      context: ./gateway
+    container_name: calculator-gateway
+    ports:
+      - "3000:3000"
+    depends_on:
+      - add-service
+      - subtract-service
+      - multiply-service
+      - divide-service
+
+  add-service:
+    build:
+      context: ./services/add
+    container_name: calculator-add-service
+    ports:
+      - "3001:3001"
+
+  subtract-service:
+    build:
+      context: ./services/subtract
+    container_name: calculator-subtract-service
+    ports:
+      - "3002:3002"
+
+  multiply-service:
+    build:
+      context: ./services/multiply
+    container_name: calculator-multiply-service
+    ports:
+      - "3003:3003"
+
+  divide-service:
+    build:
+      context: ./services/divide
+    container_name: calculator-divide-service
+    ports:
+      - "3004:3004"
