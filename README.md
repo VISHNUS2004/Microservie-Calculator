@@ -27,4 +27,4 @@ npm start
 
 ## Full Documentation
 
-See [DOCUMENTATION.md](DOCUMENTATION.md) for complete architecture, API, health checks, Docker notes, and troubleshooting details.
+See [docs.md](docs.md) for complete architecture, API, health checks, Docker notes, and troubleshooting details.
